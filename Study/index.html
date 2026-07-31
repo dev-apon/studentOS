@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudentOS – Student Productivity Dashboard</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 (Free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- ============================================================
+    SIDEBAR OVERLAY (mobile)
+    ============================================================ -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ============================================================
+    APP
+    ============================================================ -->
+    <div class="app">
+
+        <!-- ============================================================
+        SIDEBAR
+        ============================================================ -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>StudentOS</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="#" data-page="dashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#" data-page="calendar"><i class="fas fa-calendar-alt"></i> Calendar</a>
+                <a href="#" data-page="tasks"><i class="fas fa-tasks"></i> Tasks</a>
+
+                <div class="nav-label">Tools</div>
+                <a href="#" data-page="pomodoro"><i class="fas fa-clock"></i> Pomodoro</a>
+                <a href="#" data-page="stopwatch"><i class="fas fa-stopwatch"></i> Stopwatch</a>
+                <a href="#" data-page="countdown"><i class="fas fa-hourglass-half"></i> Countdown</a>
+
+                <div class="nav-label">Notes</div>
+                <a href="#" data-page="quicknotes"><i class="fas fa-sticky-note"></i> Quick Notes</a>
+                <a href="#" data-page="stickynotes"><i class="fas fa-thumbtack"></i> Sticky Notes</a>
+
+                <div class="nav-label">Academics</div>
+                <a href="#" data-page="cgpa"><i class="fas fa-calculator"></i> CGPA Calculator</a>
+                <a href="#" data-page="assignments"><i class="fas fa-file-alt"></i> Assignment Tracker</a>
+
+                <div class="nav-label">Storage</div>
+                <a href="#" data-page="files"><i class="fas fa-folder-open"></i> File Manager</a>
+
+                <div class="nav-label">System</div>
+                <a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                &copy; 2026 StudentOS
+            </div>
+        </aside>
+
+        <!-- ============================================================
+        MAIN
+        ============================================================ -->
+        <main class="main">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="pageTitle">Dashboard</h2>
+                </div>
+                <div class="topbar-right">
+                    <span class="clock-display" id="liveClock">00:00:00</span>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+
+                <!-- ============================================================
+                DASHBOARD
+                ============================================================ -->
+                <section class="page active" id="page-dashboard">
+                    <div class="greeting">
+                        <h1>Good <span id="greetingTime">Morning</span>, <span id="greetingName">Student</span></h1>
+                        <p id="currentDateDisplay"></p>
+                    </div>
+
+                    <div class="quote-box">
+                        <span><i class="fas fa-quote-left"></i> <span id="dailyQuote">The secret of getting ahead is getting started.</span></span>
+                        <span class="quote-author">— <span id="quoteAuthor">Mark Twain</span></span>
+                    </div>
+
+                    <div class="dashboard-grid" id="statsGrid">
+                        <div class="stat-card">
+                            <div class="icon green"><i class="fas fa-check"></i></div>
+                            <div class="info"><h4 id="statCompleted">0</h4><p>Completed</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon gold"><i class="fas fa-hourglass-half"></i></div>
+                            <div class="info"><h4 id="statPending">0</h4><p>Pending</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon blue"><i class="fas fa-clock"></i></div>
+                            <div class="info"><h4 id="statStudyHours">0</h4><p>Study Hours</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon purple"><i class="fas fa-book"></i></div>
+                            <div class="info"><h4 id="statSubjects">0</h4><p>Subjects</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon orange"><i class="fas fa-sticky-note"></i></div>
+                            <div class="info"><h4 id="statNotes">0</h4><p>Saved Notes</p></div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-row">
+                        <div class="dash-card">
+                            <h3><i class="fas fa-list-check"></i> Today's Tasks</h3>
+                            <ul class="task-list-mini" id="todayTasksList">
+                                <li class="empty-state"><i class="fas fa-inbox"></i><p>No tasks for today</p></li>
+                            </ul>
+                        </div>
+                        <div class="dash-card">
+                            <h3><i class="fas fa-calendar-check"></i> Upcoming Assignments</h3>
+                            <ul class="task-list-mini" id="upcomingAssignmentsList">
+                                <li class="empty-state"><i class="fas fa-calendar-plus"></i><p>No upcoming assignments</p></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-row">
+                        <div class="dash-card">
+                            <h3><i class="fas fa-fire"></i> Study Streak</h3>
+                            <div class="streak-display">
+                                <i class="fas fa-fire"></i>
+                                <span id="streakCount">0</span> days
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--text-secondary);">Keep going! Complete tasks daily.</p>
+                        </div>
+                        <div class="dash-card">
+                            <h3><i class="fas fa-chart-simple"></i> Quick Stats</h3>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;">
+                                <div><strong id="qTotalTasks">0</strong> <span style="color:var(--text-secondary);">tasks</span></div>
+                                <div><strong id="qTotalNotes">0</strong> <span style="color:var(--text-secondary);">notes</span></div>
+                                <div><strong id="qTotalAssign">0</strong> <span style="color:var(--text-secondary);">assignments</span></div>
+                                <div><strong id="qPomodoros">0</strong> <span style="color:var(--text-secondary);">pomodoros</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+                CALENDAR
+                ============================================================ -->
+                <section class="page" id="page-calendar">
+                    <div class="calendar-header">
+                        <h2 id="calendarMonthYear">January 2026</h2>
+                        <div class="calendar-nav">
+                            <button id="calPrev"><i class="fas fa-chevron-left"></i></button>
+                            <button id="calToday">Today</button>
+                            <button id="calNext"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarGrid"></div>
+
+                    <div class="calendar-events">
+                        <h4><i class="fas fa-calendar-plus"></i> Events for <span id="selectedDateLabel">today</span></h4>
+                        <div id="eventsList">
+                            <div class="empty-state"><i class="fas fa-calendar-day"></i><p>No events for this day</p></div>
+                        </div>
+
+                        <div class="add-event-form">
+                            <input type="text" id="eventInput" placeholder="Event title..." />
+                            <button id="addEventBtn"><i class="fas fa-plus"></i> Add Event</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+                TASKS
+                ============================================================ -->
+                <section class="page" id="page-tasks">
+                    <div class="task-controls">
+                        <input type="text" id="taskSearch" placeholder="Search tasks..." />
+                        <select id="taskFilter">
+                            <option value="all">All</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                        <select id="taskSort">
+                            <option value="created">Sort by Created</option>
+                            <option value="priority">Sort by Priority</option>
+                            <option value="title">Sort by Title</option>
+                        </select>
+                        <button class="add-task-btn" id="openTaskModal"><i class="fas fa-plus"></i> Add Task</button>
+                    </div>
+
+                    <div class="task-progress">
+                        <span class="progress-label">Progress</span>
+                        <div class="progress-bar"><div class="fill" id="taskProgressFill" style="width:0%"></div></div>
+                        <span class="progress-label" id="taskProgressLabel">0%</span>
+                    </div>
+
+                    <div id="tasksList"></div>
+                </section>
+
+                <!-- ============================================================
+                POMODORO
+                ============================================================ -->
+                <section class="page" id="page-pomodoro">
+                    <div class="pomodoro-container">
+                        <div class="pomodoro-modes" id="pomodoroModes">
+                            <button data-mode="25" class="active">25 / 5</button>
+                            <button data-mode="50">50 / 10</button>
+                            <button data-mode="custom">Custom</button>
+                        </div>
+
+                        <div class="pomodoro-ring">
+                            <svg width="180" height="180" viewBox="0 0 180 180">
+                                <circle class="bg-circle" cx="90" cy="90" r="78" />
+                                <circle class="progress-circle" id="pomodoroCircle" cx="90" cy="90" r="78"
+                                stroke-dasharray="490.088" stroke-dashoffset="0" />
+                            </svg>
+                            <div class="time-display">
+                                <span class="minutes" id="pomodoroMinutes">25:00</span>
+                                <span class="label" id="pomodoroLabel">Focus</span>
+                            </div>
+                        </div>
+
+                        <div class="pomodoro-controls">
+                            <button class="primary" id="pomodoroStart"><i class="fas fa-play"></i> Start</button>
+                            <button id="pomodoroPause"><i class="fas fa-pause"></i> Pause</button>
+                            <button id="pomodoroReset"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+
+                        <div class="pomodoro-stats">
+                            <div><div class="num" id="pomodoroSessions">0</div><div class="lbl">Sessions</div></div>
+                            <div><div class="num" id="pomodoroTotalMin">0</div><div class="lbl">Total Min</div></div>
+                            <div><div class="num" id="pomodoroStreak">0</div><div class="lbl">Streak</div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+                STOPWATCH
+                ============================================================ -->
+                <section class="page" id="page-stopwatch">
+                    <div class="stopwatch-container">
+                        <div class="stopwatch-display" id="stopwatchDisplay">00:00:00.00</div>
+                        <div class="stopwatch-controls">
+                            <button class="primary" id="stopwatchStart"><i class="fas fa-play"></i> Start</button>
+                            <button id="stopwatchPause"><i class="fas fa-pause"></i> Pause</button>
+                            <button id="stopwatchReset"><i class="fas fa-undo"></i> Reset</button>
+                            <button id="stopwatchLap"><i class="fas fa-flag"></i> Lap</button>
+                        </div>
+                        <div class="lap-list" id="lapList"></div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+                COUNTDOWN
+                ============================================================ -->
+                <section class="page" id="page-countdown">
+                    <div class="countdown-container">
+                        <div class="countdown-inputs">
+                            <div class="input-group"><label>Hours</label><input type="number" id="cdHours" value="0" min="0" max="99" /></div>
+                            <div class="input-group"><label>Minutes</label><input type="number" id="cdMinutes" value="5" min="0" max="59" /></div>
+                            <div class="input-group"><label>Seconds</label><input type="number" id="cdSeconds" value="0" min="0" max="59" /></div>
+                        </div>
+                        <div class="countdown-display" id="countdownDisplay">00:05:00</div>
+                        <div class="countdown-controls">
+                            <button class="primary" id="countdownStart"><i class="fas fa-play"></i> Start</button>
+                            <button id="countdownPause"><i class="fas fa-pause"></i> Pause</button>
+                            <button id="countdownReset"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+                QUICK NOTES
+                ============================================================ -->
+                <section class="page" id="page-quicknotes">
+                    <div class="add-note-form">
+                        <div class="note-input-group">
+                            <label>Title</label>
+                            <input type="text" id="noteTitleInput" placeholder="Note title..." />
+                        </div>
+                        <div class="note-input-group">
+                            <label>Content</label>
+                            <textarea id="noteBodyInput" placeholder="Write your note..." rows="2"></textarea>
+                        </div>
+                        <button id="addNoteBtn"><i class="fas fa-plus"></i> Add Note</button>
+                    </div>
+                    <div class="notes-grid" id="notesGrid"></div>
+                </section>
+
+                <!-- ============================================================
+                STICKY NOTES
+                ============================================================ -->
+                <section class="page" id="page-stickynotes">
+                    <button class="add-sticky-btn" id="addStickyBtn"><i class="fas fa-plus"></i> Add Sticky Note</button>
+                    <div class="sticky-container" id="stickyContainer"></div>
+                </section>
+
+                <!-- ============================================================
+                CGPA CALCULATOR
+                ============================================================ -->
+                <section class="page" id="page-cgpa">
+                    <div class="cgpa-container">
+                        <div class="cgpa-input-row">
+                            <div class="cgpa-group"><label>Subject</label><input type="text" id="cgpaSubject" placeholder="e.g. Math" /></div>
+                            <div class="cgpa-group"><label>Grade (0-4)</label><input type="number" id="cgpaGrade" placeholder="3.5" min="0" max="4" step="0.1" /></div>
+                            <div class="cgpa-group"><label>Credits</label><input type="number" id="cgpaCredits" placeholder="3" min="0" step="0.5" /></div>
+                            <button id="cgpaAddBtn"><i class="fas fa-plus"></i> Add</button>
+                        </div>
+
+                        <table class="cgpa-table">
+                            <thead><tr><th>Subject</th><th>Grade</th><th>Credits</th><th>Points</th><th></th></tr></thead>
+                            <tbody id="cgpaTableBody"></tbody>
+                        </table>
+
+                        <div class="cgpa-result">
+                            <div class="item"><div class="value" id="cgpaSemester">0.00</div><div class="label">Semester GPA</div></div>
+                            <div class="item"><div class="value" id="cgpaOverall">0.00</div><div class="label">Overall CGPA</div></div>
+                            <div class="item"><div class="value" id="cgpaCreditsTotal">0</div><div class="label">Total Credits</div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+                ASSIGNMENTS
+                ============================================================ -->
+                <section class="page" id="page-assignments">
+                    <div class="add-assign-form">
+                        <div class="assign-group"><label>Assignment</label><input type="text" id="assignTitle" placeholder="Title..." /></div>
+                        <div class="assign-group"><label>Subject</label><input type="text" id="assignSubject" placeholder="Subject..." /></div>
+                        <div class="assign-group"><label>Deadline</label><input type="date" id="assignDeadline" /></div>
+                        <div class="assign-group"><label>Status</label>
+                            <select id="assignStatus"><option value="pending">Pending</option><option value="in-progress">In Progress</option><option value="completed">Completed</option></select>
+                        </div>
+                        <div class="assign-group"><label>Progress %</label><input type="number" id="assignProgress" value="0" min="0" max="100" /></div>
+                        <button id="addAssignBtn"><i class="fas fa-plus"></i> Add</button>
+                    </div>
+                    <div id="assignmentsList"></div>
+                </section>
+
+                <!-- ============================================================
+                FILE MANAGER
+                ============================================================ -->
+                <section class="page" id="page-files">
+                    <div class="file-manager-upload">
+                        <label class="upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload File
+                            <input type="file" id="fileUploadInput" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.bmp,.webp,.txt,.md,.doc,.docx,.xls,.xlsx,.ppt,.pptx" />
+                        </label>
+                        <span class="file-hint"><i class="fas fa-info-circle"></i> PDF, images, text files supported (max 5MB each)</span>
+                    </div>
+
+                    <div class="file-manager-search">
+                        <input type="text" id="fileSearch" placeholder="Search files..." />
+                    </div>
+
+                    <div class="files-grid" id="filesGrid"></div>
+                </section>
+
+                <!-- ============================================================
+                SETTINGS
+                ============================================================ -->
+                <section class="page" id="page-settings">
+                    <div class="settings-group">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        <div class="settings-row">
+                            <span class="label">Theme</span>
+                            <div class="control">
+                                <select id="themeSelect">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <span class="label">Accent Color</span>
+                            <div class="control">
+                                <input type="color" id="accentColorPicker" value="#52796F" />
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <span class="label">Font Size</span>
+                            <div class="control">
+                                <select id="fontSizeSelect">
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3><i class="fas fa-database"></i> Data Management</h3>
+                        <div class="settings-row">
+                            <span class="label">Export Data</span>
+                            <button class="backup-btn" id="exportDataBtn"><i class="fas fa-download"></i> Export JSON</button>
+                        </div>
+                        <div class="settings-row">
+                            <span class="label">Import Data</span>
+                            <div class="file-input-wrap">
+                                <button class="backup-btn"><i class="fas fa-upload"></i> Import JSON</button>
+                                <input type="file" id="importDataInput" accept=".json" />
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <span class="label">Reset All</span>
+                            <button class="danger-btn" id="resetAllBtn"><i class="fas fa-trash"></i> Reset Everything</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3><i class="fas fa-info-circle"></i> About</h3>
+                        <p style="color:var(--text-secondary);font-size:0.86rem;">StudentOS v2.0 &bull; Built with ❤️ for productivity.<br />All data is stored locally in your browser.</p>
+                    </div>
+                </section>
+
+            </div><!-- /page-content -->
+
+        </main>
+    </div>
+
+    <!-- ============================================================
+    BACK TO TOP
+    ============================================================ -->
+    <button class="back-top" id="backTopBtn" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ============================================================
+    TOAST CONTAINER
+    ============================================================ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================
+    TASK MODAL
+    ============================================================ -->
+    <div id="taskModalOverlay" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.25);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+        <div style="background:var(--card-bg);border-radius:var(--radius);padding:26px 30px;max-width:440px;width:90%;box-shadow:var(--shadow-hover);border:1px solid var(--border-light);">
+            <h3 style="margin-bottom:14px;font-weight:600;font-size:1.05rem;"><i class="fas fa-plus-circle" style="color:var(--secondary);"></i> New Task</h3>
+            <input type="text" id="taskModalTitle" placeholder="Task title..." style="margin-bottom:10px;font-size:0.88rem;" />
+            <select id="taskModalPriority" style="margin-bottom:10px;font-size:0.88rem;">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+            </select>
+            <input type="text" id="taskModalCategory" placeholder="Category (optional)" style="margin-bottom:10px;font-size:0.88rem;" />
+            <input type="date" id="taskModalDue" style="margin-bottom:14px;font-size:0.88rem;" />
+            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                <button id="taskModalCancel" style="padding:7px 18px;border-radius:var(--radius-sm);font-weight:500;font-size:0.85rem;background:var(--border-light);">Cancel</button>
+                <button id="taskModalSave" style="padding:7px 22px;border-radius:var(--radius-sm);font-weight:600;font-size:0.85rem;background:var(--secondary);color:var(--white);">Save Task</button>
+            </div>
+            <input type="hidden" id="taskModalEditId" value="" />
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="dynamic.js"></script>
+</body>
+</html>
